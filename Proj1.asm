@@ -1,19 +1,26 @@
-# loop 100 x sw into memory: 1,2,3...100
+#project stuff
+#
+# $7  A
+# $8  B:0xFA19E366
+# $10 multiply fold variable
+# $11 loopCounter
+# $12 hi
+# $13 lo
+# $14 n
+#
+#
+lui $8, 0xFA19        # Initialize B
+ori $8, $8, 0xE366
+addi $7, $0, 1
 
-#$8: loopCounter
-#$9: n
-#$10: address
+addi $11, $0, 5
+multu $7, $8        # [hi,lo] = A * B
 
-addi $8, $0, 100
-addi $9, $0, 1
-ori $10, $0, 0x2000
+loop_5fold:
+mfhi $12
+mflo $13
+xor $14, $12, $13
+multu $14, $8
+addi $11, $11, -1
+bne $11, $0, loop_5fold
 
-loop_100:
-
-sw $9, 0($10)
-
-addi $9, $9, 1
-addi $10, $10, 4
-addi $8, $8, -1
-
-bne $8, $0, loop_100
