@@ -9,7 +9,9 @@
 # $13 lo
 # $14 n
 # $16 address 
-#
+# $17 MAXv
+# $18 MaxAddr
+# $4
 lui $8, 0xFA19        # Initialize B
 ori $8, $8, 0xE366
 addi $7, $0, 1	      # Initialize A
@@ -53,6 +55,12 @@ srl $6, $6, 8
 andi $13, $6, 0xff
 
 xor $6, $12, $13		    #endof C = C[15:8] XOR C[7:0]
+
+slt $4, $17, $6
+beq $4, $0, Endif
+add $17, $0, $6
+
+Endif:
 sw $6, 0($16)
 addi $16, $16, 4
 
