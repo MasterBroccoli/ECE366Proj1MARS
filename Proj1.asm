@@ -56,14 +56,15 @@ andi $13, $6, 0xff
 
 xor $6, $12, $13		    #endof C = C[15:8] XOR C[7:0]
 
-slt $4, $17, $6
+slt $4, $17, $6                     #if (MaxV<C){ MaxV = C}
 beq $4, $0, Endif
-add $17, $0, $6
+add $17, $0, $6                     # MaxV = C;
+add $18, $0, $16 		    # MaxAddr = Current Address;
 
 Endif:
-sw $6, 0($16)
-addi $16, $16, 4
+sb $6, 0($16)                       #Store C in Current Address
+addi $16, $16, 1                    # Move current address to next address
 
-addi $15, $15, -1
-addi $7, $7, 1
+addi $15, $15, -1                   #decrement outlerloop Counter
+addi $7, $7, 1                      #increment A value
 bne $15, $0, loop_Outer
