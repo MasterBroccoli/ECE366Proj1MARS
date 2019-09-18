@@ -8,16 +8,16 @@
 # $12 hi
 # $13 lo
 # $14 n
-# 
+# $16 address 
 #
 lui $8, 0xFA19        # Initialize B
 ori $8, $8, 0xE366
 addi $7, $0, 1	      # Initialize A
+addi $16, $0, 0x2020
 
-
-
+addi $15, $0, 100
 loop_Outer:
-addi $15, $0, 100      
+     
 
 
 
@@ -53,7 +53,9 @@ srl $6, $6, 8
 andi $13, $6, 0xff
 
 xor $6, $12, $13		    #endof C = C[15:8] XOR C[7:0]
-
+sw $6, 0($16)
+addi $16, $16, 4
 
 addi $15, $15, -1
+addi $7, $7, 1
 bne $15, $0, loop_Outer
