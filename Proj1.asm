@@ -13,6 +13,10 @@
 # $18 MaxAddr
 # $4
 # $23 flag
+# $20 MaxC value addr flag
+# $19 MaxC address addr flag
+# $9
+# $21
 lui $8, 0xFA19        # Initialize B
 ori $8, $8, 0xE366
 addi $7, $0, 1	      # Initialize A
@@ -59,8 +63,14 @@ xor $6, $12, $13		    #endof C = C[15:8] XOR C[7:0]
 
 slt $4, $17, $6                     #if (MaxV<C){ MaxV = C}
 beq $4, $0, Endif
+
 add $17, $0, $6                     # MaxV = C;
-add $18, $0, $16 		    # MaxAddr = Current Address;
+addi $20, $0, 0x2000
+sw $17, 0($20)
+
+add $18, $0, $16                   # MaxAddr = Current Address;
+addi $19, $0, 0x2004
+sw $18, 0($19) 		    
 
 Endif:
 sb $6, 0($16)                       #Store C in Current Address
@@ -69,10 +79,10 @@ addi $16, $16, 1                    # Move current address to next address
 addi $22, $0, 4
 loop_bleh:
 addi $4, $0, 4
-addi $13, $0, 0x0000001f
+addi $9, $0, 0x0000001f
 
-andi $12, $6, 0xfffff
-bne $12, $13, jump
+andi $21, $6, 0xfffff
+bne $21, $9, jump
 addi $23, $23, 1
 
 jump:
