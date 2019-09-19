@@ -12,6 +12,7 @@
 # $17 MAXv
 # $18 MaxAddr
 # $4
+# $23 flag
 lui $8, 0xFA19        # Initialize B
 ori $8, $8, 0xE366
 addi $7, $0, 1	      # Initialize A
@@ -65,6 +66,20 @@ Endif:
 sb $6, 0($16)                       #Store C in Current Address
 addi $16, $16, 1                    # Move current address to next address
 
+addi $22, $0, 4
+loop_bleh:
+addi $4, $0, 4
+addi $13, $0, 0x0000001f
+
+andi $12, $6, 0xfffff
+bne $12, $13, jump
+addi $23, $23, 1
+
+jump:
+srl $6,$6, 4
+addi $22, $22, -1
+bne $22, $0, loop_bleh
+
 addi $15, $15, -1                   #decrement outlerloop Counter
 addi $7, $7, 1                      #increment A value
-bne $15, $0, loop_Outer
+bne $15, $0, loop_Outer	
